@@ -4,8 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 let assert = require('assert');
 let express = require('express');
 const urlMongo = 'mongodb://localhost:27017';
-let lat = argv.la;
-let lon = argv.lo;
+let lat = argv.a;
+let lon = argv.o;
 let apiKey = argv.k;
 
 //Calling an open api

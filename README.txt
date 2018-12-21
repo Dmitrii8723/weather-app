@@ -4,7 +4,7 @@
 
 2) You need to install mongoDB on your local machine OR to point to a remote DB
 
-3) Command to run an app: node index.js -la {latitude} -lo {longitude} -k {key}
+3) Command to run an app: node index.js -a {latitude} -o {longitude} -k {key}
 
 //Use this query in order to query a store data
 
