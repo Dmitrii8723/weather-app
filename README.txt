@@ -1,11 +1,13 @@
 //Steps to set up and run an application:
 
-1) Go to a directory of the project and enter: npm install
+1) You need to install mongoDB and create an instance of DB with name "test" on your local machine 
 
-2) You need to install mongoDB on your local machine OR to point to a remote DB
+(make sure that the port 27017 is in use, otherwise change it in index.js file to a port that is in use on your local machine)
 
-3) Command to run an app: node index.js -a {latitude} -o {longitude} -k {key}
+2) To run an app use the command: node index.js (Should see 'Listening on port 3000.....')
 
-//Use this query in order to query a store data
+3) Open Chrome and install restlet plugin for Chrome
 
-db.testcollection.find().pretty()
+4) Open restlet and use the link below in order to get a weather info based on latitude and longitude coordinates. 
+
+(http://localhost:3000/api/weather?lat={}&lon={}&apiKey={})
