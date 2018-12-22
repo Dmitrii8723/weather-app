@@ -4,12 +4,13 @@ let assert = require('assert');
 let express = require('express');
 const app = express();
 let dateFormat = require('dateformat');
+let argv = require('yargs').argv;
+const apiKey = argv.k;
 const urlMongo = 'mongodb://localhost:27017';
 
 app.get('/api/weather', (req, res) => {
     const lat = req.query.lat;
     const lon = req.query.lon;
-    const apiKey = req.query.apiKey;
     const timestamp = req.query.timestamp;
 //Creating a collection and storing a data
     let dbName = 'test';
