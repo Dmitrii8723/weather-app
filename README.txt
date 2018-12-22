@@ -8,6 +8,11 @@
 
 3) Open Chrome and install restlet plugin for Chrome
 
-4) Open restlet and use the link below in order to get a weather info based on latitude and longitude coordinates. 
+4) Open restlet and use the link below in order to get a weather info based on latitude and longitude coordinates: 
 
-(http://localhost:3000/api/weather?lat={}&lon={}&apiKey={})
+http://localhost:3000/api/weather?lat={}&lon={}&apiKey={}
+
+5) Use below link in order to get historical data:
+
+http://localhost:3000/api/weather?timestamp=MM/DD/YY
+

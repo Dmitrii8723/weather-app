@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Dmitrii8723/weather-app#readme",
   "dependencies": {
     "assert": "^1.4.1",
+    "dateformat": "^3.0.3",
     "express": "^4.13.1",
     "express-handlebars": "^3.0.0",
     "mongodb": "^3.1.1",
