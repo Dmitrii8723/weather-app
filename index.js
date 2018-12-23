@@ -7,6 +7,15 @@ let dateFormat = require('dateformat');
 let argv = require('yargs').argv;
 const apiKey = argv.k;
 const urlMongo = 'mongodb://localhost:27017';
+let math = require('math');
+
+math.radians = function (degrees) {
+    return degrees * Math.PI / 180;
+};
+
+math.degrees = function (radians) {
+    return radians * 180 / Math.PI;
+};
 
 app.get('/api/weather', (req, res) => {
     const lat = req.query.lat;
@@ -50,6 +59,54 @@ app.get('/api/weather', (req, res) => {
             }, function () {
                 client.close();
                 res.send(resultArray);
+            });
+        }
+    });
+});
+
+app.get('/api/aircrafts', (req, res) => {
+
+    const latitude = req.query.lat + 1;
+    const longitude = req.query.lon;
+    const timestamp = req.query.timestamp;
+
+    let dbName = 'test';
+    MongoClient.connect(urlMongo, function (err, client) {
+        db = client.db(dbName);
+        if (!timestamp) {
+            var urlFlight = `https://opensky-network.org/api/states/all?latitude=${latitude}&longitude=${longitude}`;
+
+            request(urlFlight, function (err, response, body) {
+                if (err) {
+                    console.log('error:', error);
+                } else {
+                    item = {
+                        body: body
+                    };
+                    console.log('item:', item);
+                }
+                assert.equal(null, err);
+                console.log('It is connected');
+
+                let currentdate = new Date();
+                db.collection('flightcollection').insertOne({
+                    item,
+                    timestamp: dateFormat(currentdate, "mm/dd/yy")
+                }, function (err, result) {
+                    assert.equal(1, result.insertedCount);
+                    console.log('It is stored');
+                    client.close();
+                });
+            });
+        } else {
+            let resultArray = [];
+            let cursor = db.collection('flightcollection').find({timestamp: {$eq: timestamp}});
+            cursor.forEach(function (doc) {
+                resultArray.push(doc);
+            }, function () {
+                client.close();
+                res.send(resultArray);
+                console.log(resultArray)
             });
         }
     });

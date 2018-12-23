@@ -18,3 +18,12 @@ http://localhost:3000/api/weather?lat={}&lon={}
 
 http://localhost:3000/api/weather?timestamp=MM/DD/YY
 
+6) Use below link in order to get an aircrafts data from open 
+
+api based on latitude and longitude coordinates:
+
+http://localhost:3000/api/aircrafts?lat={}&lon={}
+
+7) Use below link in order to get historical data regarding aircrafts:
+
+http://localhost:3000/api/aircrafts?timestamp=MM/DD/YY
