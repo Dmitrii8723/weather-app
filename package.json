@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "start": "node ./index"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,9 @@
   "homepage": "https://github.com/Dmitrii8723/weather-app#readme",
   "dependencies": {
     "assert": "^1.4.1",
+    "body-parser": "^1.18.3",
     "dateformat": "^3.0.3",
+    "ejs": "^2.6.1",
     "express": "^4.13.1",
     "express-handlebars": "^3.0.0",
     "math": "0.0.3",

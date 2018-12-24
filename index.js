@@ -17,6 +17,13 @@ math.degrees = function (radians) {
     return radians * 180 / Math.PI;
 };
 
+
+app.engine('html', require('ejs').renderFile);
+app.get('/', (req, res) =>{
+    res.sendfile('index.html');
+
+});
+
 app.get('/api/weather', (req, res) => {
     const lat = req.query.lat;
     const lon = req.query.lon;
@@ -35,7 +42,8 @@ app.get('/api/weather', (req, res) => {
                     item = {
                         body: body
                     };
-                    console.log('body:', body);
+                    console.log('body:', item);
+                    res.sendfile('index.html');
                 }
                 assert.equal(null, err);
                 console.log('It is connected');
@@ -48,7 +56,9 @@ app.get('/api/weather', (req, res) => {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
+                    res.sendfile('index.html', res.json({items: item}));
                 });
+
             });
 
         } else {
@@ -58,7 +68,9 @@ app.get('/api/weather', (req, res) => {
                 resultArray.push(doc);
             }, function () {
                 client.close();
-                res.send(resultArray);
+                console.log('It is stored');
+                console.log(resultArray);
+               res.sendfile('index.html', {itemsfiltered: resultArray});
             });
         }
     });
@@ -80,10 +92,12 @@ app.get('/api/aircrafts', (req, res) => {
                 if (err) {
                     console.log('error:', error);
                 } else {
+                    res.send(body);
                     item = {
                         body: body
                     };
-                    console.log('item:', item);
+
+                    console.log('item:', body);
                 }
                 assert.equal(null, err);
                 console.log('It is connected');
