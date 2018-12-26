@@ -8,24 +8,7 @@ Important!!! - use a version of node js - 10.13.0
 
 2) To run an app use the command: node index.js -k {apiKey} (Should see 'Listening on port 3000.....')
 
-3) Open Chrome and install restlet plugin for Chrome
+4) Open your browser and use the link below in order to access the application: 
 
-4) Open restlet and use the link below in order to get a weather info from open weather 
+http://localhost:3000
 
-api based on latitude and longitude coordinates: 
-
-http://localhost:3000/api/weather?lat={}&lon={}
-
-5) Use below link in order to get historical data:
-
-http://localhost:3000/api/weather?timestamp=MM/DD/YY
-
-6) Use below link in order to get an aircrafts data from open 
-
-api based on latitude and longitude coordinates:
-
-http://localhost:3000/api/aircraft?lat={}&lon={}
-
-7) Use below link in order to get historical data regarding aircrafts:
-
-http://localhost:3000/api/aircraft?timestamp=MM/DD/YY
