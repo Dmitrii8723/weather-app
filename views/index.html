@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <script src="/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/default.css"/>
+</head>
+<body>
+<section>
+    <form action="/api/weather" method="get" class="weather">
+        <h1>Weather</h1>
+        <h3>Enter coordinates:</h3>
+        <div>
+            <label>Latitude</label>
+            <input class="latitudeinput" type="text" id="latitude" name="lat">
+        </div>
+        <div>
+            <label>Longitude</label>
+            <input type="text" id="longitude" name="lon">
+        </div>
+        <button class="weatherbotton" type="submit">LOAD DATA</button>
+        <div class="weatherdata">
+            <article>
+                <div><%= items %></div>
+            </article>
+        </div>
+    </form>
+    <form action="/api/weather" class="weatherfilter" method="get">
+
+        <h1 class="weatherbydate">Weather by date</h1>
+        <h3>Enter date:</h3>
+        <div>
+            <label>Date</label>
+            <input type="text" id="timestamp" name="timestamp">
+        </div>
+        <button class="weatherbottonfilter" type="submit">LOAD DATA</button>
+        <div>
+            <article>
+                <div><%= itemsfiltered %></div>
+            </article>
+
+        </div>
+    </form>
+    <form action="/api/aircraft" method="get" class="weather">
+        <h1>Aircraft</h1>
+        <h3>Enter coordinates:</h3>
+        <div>
+            <label>Latitude</label>
+            <input class="latitudeinput" type="text" id="latitude2" name="lat">
+        </div>
+        <div>
+            <label>Longitude</label>
+            <input type="text" id="longitude2" name="lon">
+        </div>
+        <button class="weatherbotton" type="submit">LOAD DATA</button>
+        <div class="weatherdata">
+            <article>
+                <div><%= itemsaircraft %></div>
+            </article>
+        </div>
+    </form>
+    <form action="/api/aircraft" class="weatherfilter" method="get">
+
+        <h1 class="weatherbydate">Aircraft by date</h1>
+        <h3>Enter date:</h3>
+        <div>
+            <label>Date</label>
+            <input type="text" id="timestamp2" name="timestamp">
+        </div>
+        <button class="weatherbottonfilter" type="submit">LOAD DATA</button>
+        <div>
+            <article>
+                <div><%= itemsaircraftfiltered %></div>
+            </article>
+
+        </div>
+    </form>
+</section>
+</body>
+</html>

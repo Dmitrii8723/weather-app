@@ -1,0 +1,62 @@
+
+.weather {
+
+    border: solid black 2px;
+    margin-bottom: 2px;
+}
+
+.weatherdata {
+    margin-top: 5px;
+}
+
+.weatherbottonfilter {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+
+}
+
+.weatherbotton {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.weatherfilter {
+    margin-top: 5px;
+    border: solid black 2px;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+}
+
+.weatherbydate {
+    margin-left: 800px;
+    margin-left: 810px;
+}
+
+.divweather {
+    text-align: left;
+}
+
+.latitudeinput{
+    margin-left: 13px;
+}
+
+h1 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 850px;
+}
+
+h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 20px;
+}
+
+input {
+    margin-top: 10px;
+}
+
+label {
+    margin-left: 20px;
+}

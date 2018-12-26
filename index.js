@@ -9,6 +9,7 @@ const apiKey = argv.k;
 const urlMongo = 'mongodb://localhost:27017';
 let math = require('math');
 
+app.use('/static', express.static('static'))
 math.radians = function (degrees) {
     return degrees * Math.PI / 180;
 };
@@ -20,7 +21,8 @@ math.degrees = function (radians) {
 
 app.engine('html', require('ejs').renderFile);
 app.get('/', (req, res) =>{
-    res.sendfile('index.html');
+    res.render('index.html', {items: null, itemsfiltered: null, itemsaircraft: null, itemsaircraftfiltered: null});
+
 
 });
 
@@ -38,45 +40,41 @@ app.get('/api/weather', (req, res) => {
                 if (err) {
                     console.log('error:', error);
                 } else {
-                    res.send(body);
                     item = {
                         body: body
                     };
                     console.log('body:', item);
-                    res.sendfile('index.html');
                 }
                 assert.equal(null, err);
                 console.log('It is connected');
-
                 let currentdate = new Date();
-                db.collection('testcollection').insertOne({
+                db.collection('WEATHER').insertOne({
                     item,
                     timestamp: dateFormat(currentdate, "mm/dd/yy")
                 }, function (err, result) {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
-                    res.sendfile('index.html', res.json({items: item}));
+                    res.render( 'index.html', {items: body, itemsaircraft: null, itemsfiltered: null, itemsaircraftfiltered: null});
                 });
-
             });
 
         } else {
             let resultArray = [];
-            let cursor = db.collection('testcollection').find({timestamp: {$eq: timestamp}});
+            let cursor = db.collection('WEATHER').find({timestamp: {$eq: timestamp}});
             cursor.forEach(function (doc) {
                 resultArray.push(doc);
             }, function () {
                 client.close();
                 console.log('It is stored');
                 console.log(resultArray);
-               res.sendfile('index.html', {itemsfiltered: resultArray});
+               res.render('index.html', {itemsfiltered: resultArray, items: null, itemsaircraft: null, itemsaircraftfiltered: null});
             });
         }
     });
 });
 
-app.get('/api/aircrafts', (req, res) => {
+app.get('/api/aircraft', (req, res) => {
 
     const latitude = req.query.lat + 1;
     const longitude = req.query.lon;
@@ -92,7 +90,6 @@ app.get('/api/aircrafts', (req, res) => {
                 if (err) {
                     console.log('error:', error);
                 } else {
-                    res.send(body);
                     item = {
                         body: body
                     };
@@ -103,24 +100,25 @@ app.get('/api/aircrafts', (req, res) => {
                 console.log('It is connected');
 
                 let currentdate = new Date();
-                db.collection('flightcollection').insertOne({
+                db.collection('AIRCRAFT').insertOne({
                     item,
                     timestamp: dateFormat(currentdate, "mm/dd/yy")
                 }, function (err, result) {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
+                    res.render( 'index.html', {itemsaircraft: body, items: null, itemsfiltered: null, itemsaircraftfiltered: null});
                 });
             });
         } else {
             let resultArray = [];
-            let cursor = db.collection('flightcollection').find({timestamp: {$eq: timestamp}});
+            let cursor = db.collection('AIRCRAFT').find({timestamp: {$eq: timestamp}});
             cursor.forEach(function (doc) {
                 resultArray.push(doc);
             }, function () {
                 client.close();
-                res.send(resultArray);
                 console.log(resultArray)
+                res.render('index.html', {itemsaircraftfiltered: resultArray, items: null, itemsaircraft: null, itemsfiltered: null});
             });
         }
     });

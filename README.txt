@@ -1,5 +1,7 @@
 //Steps to set up and run an application:
 
+Important!!! - use a version of node js - 10.13.0
+
 1) You need to install mongoDB and create an instance of DB with name "test" on your local machine 
 
 (make sure that the port 27017 is in use, otherwise change it in index.js file to a port that is in use on your local machine)
@@ -22,8 +24,8 @@ http://localhost:3000/api/weather?timestamp=MM/DD/YY
 
 api based on latitude and longitude coordinates:
 
-http://localhost:3000/api/aircrafts?lat={}&lon={}
+http://localhost:3000/api/aircraft?lat={}&lon={}
 
 7) Use below link in order to get historical data regarding aircrafts:
 
-http://localhost:3000/api/aircrafts?timestamp=MM/DD/YY
+http://localhost:3000/api/aircraft?timestamp=MM/DD/YY
