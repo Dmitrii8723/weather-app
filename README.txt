@@ -12,3 +12,5 @@ Important!!! - use a version of node js - 10.13.0
 
 http://localhost:3000
 
+5) Use this date format "mm/dd/yy" in order to access a historical data
+

@@ -18,12 +18,9 @@ math.degrees = function (radians) {
     return radians * 180 / Math.PI;
 };
 
-
 app.engine('html', require('ejs').renderFile);
-app.get('/', (req, res) =>{
+app.get('/', (req, res) => {
     res.render('index.html', {items: null, itemsfiltered: null, itemsaircraft: null, itemsaircraftfiltered: null});
-
-
 });
 
 app.get('/api/weather', (req, res) => {
@@ -48,27 +45,37 @@ app.get('/api/weather', (req, res) => {
                 assert.equal(null, err);
                 console.log('It is connected');
                 let currentdate = new Date();
-                db.collection('WEATHER').insertOne({
+                db.collection('weather').insertOne({
                     item,
                     timestamp: dateFormat(currentdate, "mm/dd/yy")
                 }, function (err, result) {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
-                    res.render( 'index.html', {items: body, itemsaircraft: null, itemsfiltered: null, itemsaircraftfiltered: null});
+                    res.render('index.html', {
+                        items: body,
+                        itemsaircraft: null,
+                        itemsfiltered: null,
+                        itemsaircraftfiltered: null
+                    });
                 });
             });
 
         } else {
             let resultArray = [];
-            let cursor = db.collection('WEATHER').find({timestamp: {$eq: timestamp}});
+            let cursor = db.collection('weather').find({timestamp: {$eq: timestamp}});
             cursor.forEach(function (doc) {
+
                 resultArray.push(doc);
             }, function () {
                 client.close();
                 console.log('It is stored');
-                console.log(resultArray);
-               res.render('index.html', {itemsfiltered: resultArray, items: null, itemsaircraft: null, itemsaircraftfiltered: null});
+                res.render('index.html', {
+                    itemsfiltered: JSON.stringify(resultArray),
+                    items: null,
+                    itemsaircraft: null,
+                    itemsaircraftfiltered: null
+                });
             });
         }
     });
@@ -79,7 +86,6 @@ app.get('/api/aircraft', (req, res) => {
     const latitude = req.query.lat + 1;
     const longitude = req.query.lon;
     const timestamp = req.query.timestamp;
-
     let dbName = 'test';
     MongoClient.connect(urlMongo, function (err, client) {
         db = client.db(dbName);
@@ -93,35 +99,49 @@ app.get('/api/aircraft', (req, res) => {
                     item = {
                         body: body
                     };
-
                     console.log('item:', body);
                 }
                 assert.equal(null, err);
                 console.log('It is connected');
 
                 let currentdate = new Date();
-                db.collection('AIRCRAFT').insertOne({
+                db.collection('aircraft').insertOne({
                     item,
                     timestamp: dateFormat(currentdate, "mm/dd/yy")
                 }, function (err, result) {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
-                    res.render( 'index.html', {itemsaircraft: body, items: null, itemsfiltered: null, itemsaircraftfiltered: null});
+                    res.render('index.html', {
+                        itemsaircraft: body,
+                        items: null,
+                        itemsfiltered: null,
+                        itemsaircraftfiltered: null
+                    });
                 });
             });
         } else {
             let resultArray = [];
-            let cursor = db.collection('AIRCRAFT').find({timestamp: {$eq: timestamp}});
+            let cursor = db.collection('aircraft').find({timestamp: {$eq: timestamp}});
             cursor.forEach(function (doc) {
                 resultArray.push(doc);
             }, function () {
                 client.close();
-                console.log(resultArray)
-                res.render('index.html', {itemsaircraftfiltered: resultArray, items: null, itemsaircraft: null, itemsfiltered: null});
+                console.log(resultArray);
+                res.render('index.html', {
+                    itemsaircraftfiltered: JSON.stringify(resultArray),
+                    items: null,
+                    itemsaircraft: null,
+                    itemsfiltered: null
+                });
             });
         }
     });
 });
 
 app.listen(3000, () => console.log('Listening on port 3000....'));
+
+
+
+
+
