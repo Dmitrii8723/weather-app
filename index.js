@@ -84,17 +84,17 @@ app.get('/api/weather', (req, res) => {
 
 app.get('/api/aircraft', (req, res) => {
 
-    const latitudemin1 = parseInt(req.query.lat) - 1;
-    const longitudemin1 = parseInt(req.query.lon) - 1;
-    const latitudemax1 = parseInt(req.query.lat) + 1;
-    const longitudemax1 = parseInt(req.query.lon) + 1;
+    const latitudemin = parseInt(req.query.lat) - 1;
+    const longitudemin = parseInt(req.query.lon) - 1;
+    const latitudemax = parseInt(req.query.lat) + 1;
+    const longitudemax = parseInt(req.query.lon) + 1;
     const timestamp = req.query.timestamp;
     let dbName = 'test';
 
     MongoClient.connect(urlMongo, (err, client) => {
         db = client.db(dbName);
         if (!timestamp) {
-            const urlFlight = `https://opensky-network.org/api/states/all?lamin=${latitudemin1}&lomin=${longitudemin1}&lamax=${latitudemax1}&lomax=${longitudemax1}`;
+            const urlFlight = `https://opensky-network.org/api/states/all?lamin=${latitudemin}&lomin=${longitudemin}&lamax=${latitudemax}&lomax=${longitudemax}`;
             request(urlFlight, (err, response, body) => {
                 if (err) {
                     console.log('error:', error);
