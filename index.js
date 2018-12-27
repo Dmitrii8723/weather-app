@@ -10,11 +10,11 @@ const urlMongo = 'mongodb://localhost:27017';
 let math = require('math');
 
 app.use('/static', express.static('static'))
-math.radians = function (degrees) {
+math.radians = (degrees) => {
     return degrees * Math.PI / 180;
 };
 
-math.degrees = function (radians) {
+math.degrees = (radians) => {
     return radians * 180 / Math.PI;
 };
 
@@ -27,13 +27,14 @@ app.get('/api/weather', (req, res) => {
     const lat = req.query.lat;
     const lon = req.query.lon;
     const timestamp = req.query.timestamp;
+
 //Creating a collection and storing a data
     let dbName = 'test';
-    MongoClient.connect(urlMongo, function (err, client) {
+    MongoClient.connect(urlMongo, (err, client) => {
         db = client.db(dbName);
         if (!timestamp) {
-            let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-            request(url, function (err, response, body) {
+            const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+            request(url, (err, response, body) => {
                 if (err) {
                     console.log('error:', error);
                 } else {
@@ -48,7 +49,7 @@ app.get('/api/weather', (req, res) => {
                 db.collection('weather').insertOne({
                     item,
                     timestamp: dateFormat(currentdate, "mm/dd/yy")
-                }, function (err, result) {
+                }, (err, result) => {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
@@ -64,7 +65,7 @@ app.get('/api/weather', (req, res) => {
         } else {
             let resultArray = [];
             let cursor = db.collection('weather').find({timestamp: {$eq: timestamp}});
-            cursor.forEach(function (doc) {
+            cursor.forEach((doc) => {
 
                 resultArray.push(doc);
             }, function () {
@@ -83,16 +84,18 @@ app.get('/api/weather', (req, res) => {
 
 app.get('/api/aircraft', (req, res) => {
 
-    const latitude = req.query.lat + 1;
-    const longitude = req.query.lon;
+    const latitudemin1 = parseInt(req.query.lat) - 1;
+    const longitudemin1 = parseInt(req.query.lon) - 1;
+    const latitudemax1 = parseInt(req.query.lat) + 1;
+    const longitudemax1 = parseInt(req.query.lon) + 1;
     const timestamp = req.query.timestamp;
     let dbName = 'test';
-    MongoClient.connect(urlMongo, function (err, client) {
+
+    MongoClient.connect(urlMongo, (err, client) => {
         db = client.db(dbName);
         if (!timestamp) {
-            var urlFlight = `https://opensky-network.org/api/states/all?latitude=${latitude}&longitude=${longitude}`;
-
-            request(urlFlight, function (err, response, body) {
+            const urlFlight = `https://opensky-network.org/api/states/all?lamin=${latitudemin1}&lomin=${longitudemin1}&lamax=${latitudemax1}&lomax=${longitudemax1}`;
+            request(urlFlight, (err, response, body) => {
                 if (err) {
                     console.log('error:', error);
                 } else {
@@ -108,7 +111,7 @@ app.get('/api/aircraft', (req, res) => {
                 db.collection('aircraft').insertOne({
                     item,
                     timestamp: dateFormat(currentdate, "mm/dd/yy")
-                }, function (err, result) {
+                }, (err, result) => {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
@@ -123,9 +126,9 @@ app.get('/api/aircraft', (req, res) => {
         } else {
             let resultArray = [];
             let cursor = db.collection('aircraft').find({timestamp: {$eq: timestamp}});
-            cursor.forEach(function (doc) {
+            cursor.forEach((doc) => {
                 resultArray.push(doc);
-            }, function () {
+            }, () => {
                 client.close();
                 console.log(resultArray);
                 res.render('index.html', {
