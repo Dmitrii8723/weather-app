@@ -73,6 +73,18 @@
             </article>
         </div>
     </form>
+    <form action="/api/tracks" class="weatherfilter" method="get">
+        <h1 class="aircrafttracking">An aircraft's travelled distance</h1>
+        <h3>Enter a transponder of an aircraft:</h3>
+        <div>
+            <label>Transponder</label>
+            <input type="text" id="timestamp3" name="transponder">
+        </div>
+        <button class="weatherbottonfilter" type="submit">LOAD DATA</button>
+        <div class="itemstrack">
+            <div class="distance"><%= itemstrack %> km</div>
+        </div>
+    </form>
 </section>
 </body>
 </html>

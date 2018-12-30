@@ -29,8 +29,11 @@
 }
 
 .weatherbydate {
-    margin-left: 800px;
     margin-left: 810px;
+}
+
+.aircrafttracking {
+    margin-left: 730px;
 }
 
 .divweather {
@@ -39,6 +42,17 @@
 
 .latitudeinput {
     margin-left: 13px;
+}
+
+.itemstrack {
+    font-size: 25px;
+    margin-left: 20px;
+    border: solid black 1px;
+    width: 255px;
+}
+
+.distance {
+    margin-left: 110px;
 }
 
 h1 {
@@ -59,4 +73,9 @@ input {
 
 label {
     margin-left: 20px;
+
+}
+
+p {
+    margin-left: 150px;
 }
