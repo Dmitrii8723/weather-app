@@ -169,73 +169,59 @@ app.get('/api/aircraft', (req, res) => {
 });
 
 app.get('/api/tracks', (req, res) => {
-    let dbName = 'test';
     transponder = req.query.transponder;
     console.log(transponder);
-    MongoClient.connect(urlMongo, (err, client) => {
-        db = client.db(dbName);
-        if (transponder) {
-            const urlTrack = `https://opensky-network.org/api/tracks/all?icao24=${transponder}&time=0`;
-            request(urlTrack, (err, response, body) => {
-                if (err) {
-                    console.log('error:', error);
-                } else {
-                    console.log('BODY: ', body);
-                    itemtrack = {
-                        body: JSON.parse(body)
-                    };
-                    let i = 0;
-                    let maxElementTrack = 0;
-                    console.log('Path: ', itemtrack.body.path);
-                    itemtrack.body.path.forEach(() => {
-                        if (maxElementTrack < i) {
-                            maxElementTrack = maxElementTrack + 1;
-                        }
-                        i++;
-                    });
-                    console.log('maxElement1: ', maxElementTrack);
-                    let aircraftLatitude2 = itemtrack.body.path[maxElementTrack][1];
-                    let aircraftLongitude2 = itemtrack.body.path[maxElementTrack][2];
-                    console.log('aircraftLatitude2: ', aircraftLatitude2);
-                    console.log('aircraftLongitude2: ', aircraftLongitude2);
-                    let c = 0;
-                    let maxElementAircraft = 0;
-                    itemsaircaftrack.body.states.forEach(() => {
-                        console.log('c: ', c);
-                        if (itemsaircaftrack.body.states[c][0] === transponder) {
-                            maxElementAircraft = maxElementAircraft + c;
-                        }
-                        c++;
-                    });
-                    console.log('maxElement2: ', maxElementAircraft);
-                    let aircraftLatitude1 = itemsaircaftrack.body.states[maxElementAircraft][6];
-                    let aircraftLongitude1 = itemsaircaftrack.body.states[maxElementAircraft][5];
-                    console.log('aircraftLatitude1: ', aircraftLatitude1);
-                    console.log('aircraftLongitude1: ', aircraftLongitude1);
-                    let dis = (aircraftLatitude2 - aircraftLatitude1) * (aircraftLatitude2 - aircraftLatitude1) + (aircraftLongitude2 - aircraftLongitude1) * (aircraftLongitude2 - aircraftLongitude1);
-                    let distance = math.round(math.sqrt(dis) * 100);
+    if (transponder) {
+        const urlTrack = `https://opensky-network.org/api/tracks/all?icao24=${transponder}&time=0`;
+        request(urlTrack, (err, response, body) => {
+            if (err || !body) {
+                console.log('error:', error);
+            } else {
+                console.log('BODY: ', body);
+                itemtrack = {
+                    body: JSON.parse(body)
+                };
 
-                    console.log('Distance: ', distance);
-                    res.render('index.html', {
-                        itemstrack: distance,
-                        items: null,
-                        itemsfiltered: null,
-                        itemsaircraft: null,
-                        itemsaircraftfiltered: null
-                    });
-                }
-            });
-        } else {
-            res.render('index.html', {
-                itemsfiltered: null,
-                items: null,
-                itemsaircraft: null,
-                itemsaircraftfiltered: null,
-                itemstrack: null
-            });
-        }
-    });
+                console.log('Path: ', itemtrack.body.path);
+                        maxElementTrack = itemtrack.body.path.length - 1;
+                console.log('maxElement1: ', maxElementTrack);
+                let aircraftLatitude2 = itemtrack.body.path[maxElementTrack][1];
+                let aircraftLongitude2 = itemtrack.body.path[maxElementTrack][2];
+                console.log('aircraftLatitude2: ', aircraftLatitude2);
+                console.log('aircraftLongitude2: ', aircraftLongitude2);
+                let maxElementAircraft = 0;
+                itemsaircaftrack.body.states.forEach((state, i) => {
+                    if (state[0] === transponder) {
+                        maxElementAircraft = i;
+                    }
+                });
+                console.log('maxElement2: ', maxElementAircraft);
+                let aircraftLatitude1 = itemsaircaftrack.body.states[maxElementAircraft][6];
+                let aircraftLongitude1 = itemsaircaftrack.body.states[maxElementAircraft][5];
+                console.log('aircraftLatitude1: ', aircraftLatitude1);
+                console.log('aircraftLongitude1: ', aircraftLongitude1);
+                let dis = (aircraftLatitude2 - aircraftLatitude1) * (aircraftLatitude2 - aircraftLatitude1) + (aircraftLongitude2 - aircraftLongitude1) * (aircraftLongitude2 - aircraftLongitude1);
+                let distance = math.round(math.sqrt(dis) * 100);
 
+                console.log('Distance: ', distance);
+                res.render('index.html', {
+                    itemstrack: distance,
+                    items: null,
+                    itemsfiltered: null,
+                    itemsaircraft: null,
+                    itemsaircraftfiltered: null
+                });
+            }
+        });
+    } else {
+        res.render('index.html', {
+            itemsfiltered: null,
+            items: null,
+            itemsaircraft: null,
+            itemsaircraftfiltered: null,
+            itemstrack: null
+        });
+    }
 });
 
 app.listen(3000, () => console.log('Listening on port 3000....'));
