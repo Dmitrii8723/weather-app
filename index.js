@@ -9,7 +9,7 @@ const apiKey = argv.k;
 const urlMongo = 'mongodb://localhost:27017';
 let math = require('math');
 
-app.use('/static', express.static('static'))
+app.use('/static', express.static('static'));
 math.radians = (degrees) => {
     return degrees * Math.PI / 180;
 };
@@ -18,9 +18,9 @@ math.degrees = (radians) => {
     return radians * 180 / Math.PI;
 };
 
-app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
-    res.render('index.html', {
+    res.render('index', {
         items: null,
         itemsfiltered: null,
         itemsaircraft: null,
@@ -59,7 +59,7 @@ app.get('/api/weather', (req, res) => {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
-                    res.render('index.html', {
+                    res.render('index', {
                         items: body,
                         itemsaircraft: null,
                         itemsfiltered: null,
@@ -68,7 +68,6 @@ app.get('/api/weather', (req, res) => {
                     });
                 });
             });
-
         } else if (timestamp) {
             let resultArray = [];
             let cursor = db.collection('weather').find({timestamp: {$eq: timestamp}});
@@ -78,7 +77,7 @@ app.get('/api/weather', (req, res) => {
             }, function () {
                 client.close();
                 console.log('It is stored');
-                res.render('index.html', {
+                res.render('index', {
                     itemsfiltered: JSON.stringify(resultArray),
                     items: null,
                     itemsaircraft: null,
@@ -87,7 +86,8 @@ app.get('/api/weather', (req, res) => {
                 });
             });
         } else {
-            res.render('index.html', {
+            client.close();
+            res.render('index', {
                 itemsfiltered: null,
                 items: null,
                 itemsaircraft: null,
@@ -131,7 +131,7 @@ app.get('/api/aircraft', (req, res) => {
                     assert.equal(1, result.insertedCount);
                     console.log('It is stored');
                     client.close();
-                    res.render('index.html', {
+                    res.render('index', {
                         itemsaircraft: body,
                         items: null,
                         itemsfiltered: null,
@@ -148,7 +148,7 @@ app.get('/api/aircraft', (req, res) => {
             }, () => {
                 client.close();
                 console.log(resultArray);
-                res.render('index.html', {
+                res.render('index', {
                     itemsaircraftfiltered: JSON.stringify(resultArray),
                     items: null,
                     itemsaircraft: null,
@@ -157,7 +157,8 @@ app.get('/api/aircraft', (req, res) => {
                 });
             });
         } else {
-            res.render('index.html', {
+            client.close();
+            res.render('index', {
                 itemsfiltered: null,
                 items: null,
                 itemsaircraft: null,
@@ -203,7 +204,7 @@ app.get('/api/tracks', (req, res) => {
             distance = math.round(math.sqrt(dis) * 100);
         }
         console.log('Distance: ', distance);
-        res.render('index.html', {
+        res.render('index', {
             itemstrack: distance,
             items: null,
             itemsfiltered: null,
@@ -212,7 +213,6 @@ app.get('/api/tracks', (req, res) => {
         });
     });
 });
-
 
 app.listen(3000, () => console.log('Listening on port 3000....'));
 
